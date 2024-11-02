@@ -1,36 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
 import { useCart } from "../context/CartContext";
+import Modal from "./Modal"; // Import the modal
 
 const Navbar = () => {
+  const { cartItems } = useCart();
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const {cartItems }= useCart()
+  const handleSignInClick = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="navbar-section">
-
       <div className="navSection">
-      <Link to='/' className="custom-link">
-  <div className="title">
-    <h2>E-Mart</h2>
-  </div>
-</Link>
+        <Link to="/" className="custom-link">
+          <div className="title">
+            <h2>Shopster</h2>
+          </div>
+        </Link>
 
         <div className="search">
           <input type="text" placeholder="Search..." />
         </div>
-        <div className="user">
-          <div className="user-detail">SignIN/SignUp</div>
+        <div className="user" onClick={handleSignInClick}>
+          <div className="user-detail">Sign In / Sign Up</div>
         </div>
-          <Link to= '/cart'>
-          <div className="cart">Cart
-          <span>
-            {cartItems.length}
-          </span>
-          </div>
-          </Link>
+        <Link to="/cart">
+          <div className="cart">Cart : <span>{cartItems.length}</span></div>
+        </Link>
       </div>
+
       <div className="subMenu">
         <ul>
           <Link to="/mobiles" className="custom-link">
@@ -81,7 +85,10 @@ const Navbar = () => {
           </Link>
         </ul>
       </div>
-    </div >
+
+      {/* Modal for sign-in/sign-up */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
+    </div>
   );
 };
 
